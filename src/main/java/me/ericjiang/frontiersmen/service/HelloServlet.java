@@ -1,5 +1,3 @@
-
-
 package me.ericjiang.frontiersmen.service;
 
 import java.io.IOException;

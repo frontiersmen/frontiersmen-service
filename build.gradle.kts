@@ -12,12 +12,7 @@ plugins {
 
     // https://guides.gradle.org/building-java-web-applications/
     war
-    id("org.gretty") version "2.2.0"
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_10
-    targetCompatibility = JavaVersion.VERSION_1_10
+    id("org.gretty") version "2.3.1"
 }
 
 repositories {
