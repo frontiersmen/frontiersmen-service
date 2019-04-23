@@ -10,8 +10,14 @@ plugins {
     // Apply the java plugin to add support for Java
     java
 
-    // Apply the application plugin to add support for building an application
-    application
+    // https://guides.gradle.org/building-java-web-applications/
+    war
+    id("org.gretty") version "2.2.0"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_10
+    targetCompatibility = JavaVersion.VERSION_1_10
 }
 
 repositories {
@@ -21,14 +27,6 @@ repositories {
 }
 
 dependencies {
-    // This dependency is found on compile classpath of this component and consumers.
-    implementation("com.google.guava:guava:27.0.1-jre")
-
-    // Use JUnit test framework
-    testImplementation("junit:junit:4.12")
-}
-
-application {
-    // Define the main class for the application
-    mainClassName = "me.ericjiang.frontiersmen.service.App"
+    providedCompile("javax.servlet:javax.servlet-api:3.1.0") 
+    testCompile("junit:junit:4.12")
 }
