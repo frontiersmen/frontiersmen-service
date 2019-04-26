@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="logDirectory">build/logs</Property>
+        <Property name="logPattern">%d{HH:mm:ss.SSS} [%t] %highlight{%-5level} %logger{36} - %msg%n</Property>
+    </Properties>
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="${logPattern}"/>
+        </Console>
+        <File name="FileAppender" fileName="${logDirectory}/application.log">
+            <PatternLayout pattern="${logPattern}"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="ALL">
+            <AppenderRef ref="ConsoleAppender" level="ERROR"/>
+            <AppenderRef ref="FileAppender" level="DEBUG"/>
+        </Root>
+    </Loggers>
+</Configuration>

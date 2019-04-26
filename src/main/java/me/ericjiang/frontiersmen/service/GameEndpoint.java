@@ -1,5 +1,7 @@
 package me.ericjiang.frontiersmen.service;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -9,6 +11,7 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 
+@Slf4j
 @ServerEndpoint(value = "/game/{gameId}/player/{playerId}")
 public class GameEndpoint {
 
@@ -19,6 +22,7 @@ public class GameEndpoint {
             @PathParam("playerId") String playerId) {
         // Get current Game state and return to user
         // Subscribe session to updates
+        log.info("Player {} connected to game {}", playerId, gameId);
     }
 
     @OnMessage
@@ -29,11 +33,16 @@ public class GameEndpoint {
             @PathParam("playerId") String playerId) throws IOException {
         // Translate and forward GameEvents
         session.getBasicRemote().sendText(message);
+        log.debug("Received message from player {} to game {}: '{}'", playerId, gameId, message);
     }
 
     @OnClose
-    public void onClose(Session session) {
+    public void onClose(
+            Session session,
+            @PathParam("gameId") String gameId,
+            @PathParam("playerId") String playerId) {
         // Unsubscribe session
+        log.info("Player {} disconnected from game {}", playerId, gameId);
     }
 
     @OnError

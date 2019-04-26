@@ -12,7 +12,9 @@ plugins {
 
     // https://guides.gradle.org/building-java-web-applications/
     war
+
     id("org.gretty") version "2.3.1"
+    id("io.freefair.lombok") version "3.2.0"
 }
 
 repositories {
@@ -22,6 +24,13 @@ repositories {
 }
 
 dependencies {
-    providedCompile("javax.servlet:javax.servlet-api:3.1.0") 
+    providedCompile("javax.servlet:javax.servlet-api:3.1.0")
+    providedCompile("org.apache.logging.log4j:log4j-api:2.11.2")
+    providedCompile("org.apache.logging.log4j:log4j-core:2.11.2")
+    providedCompile("org.apache.logging.log4j:log4j-slf4j18-impl:2.11.2")
     testCompile("junit:junit:4.12")
+}
+
+gretty {
+    servletContainer = "jetty9.4"
 }
