@@ -33,6 +33,5 @@ dependencies {
 
 gretty {
     servletContainer = "jetty9.4"
-    logDir = "$buildDir/logs"
-    logFileName = "server"
+    logbackConfigFile = "gretty-logback.xml"
 }
