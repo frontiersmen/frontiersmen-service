@@ -2,6 +2,7 @@ package me.ericjiang.frontiersmen.service;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.websocket.EncodeException;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -12,7 +13,10 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 
 @Slf4j
-@ServerEndpoint(value = "/game/{gameId}/player/{playerId}")
+@ServerEndpoint(
+        value = "/game/{gameId}/player/{playerId}",
+        encoders = GameEventEncoder.class,
+        decoders = GameEventDecoder.class)
 public class GameEndpoint {
 
     @OnOpen
@@ -28,12 +32,12 @@ public class GameEndpoint {
     @OnMessage
     public void onMessage(
             Session session,
-            String message,
+            GameEvent event,
             @PathParam("gameId") String gameId,
-            @PathParam("playerId") String playerId) throws IOException {
+            @PathParam("playerId") String playerId) throws IOException, EncodeException {
         // Translate and forward GameEvents
-        session.getBasicRemote().sendText(message);
-        log.debug("Received message from player {} to game {}: '{}'", playerId, gameId, message);
+        session.getBasicRemote().sendObject(event);
+        log.debug("Received message from player {} to game {}: '{}'", playerId, gameId, event.toString());
     }
 
     @OnClose
@@ -48,5 +52,6 @@ public class GameEndpoint {
     @OnError
     public void onError(Session session, Throwable throwable) {
         // Do error handling here
+        log.error("{}", throwable);
     }
 }
