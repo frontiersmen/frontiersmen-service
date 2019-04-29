@@ -13,8 +13,9 @@ plugins {
     // https://guides.gradle.org/building-java-web-applications/
     war
 
+    id("com.github.ben-manes.versions") version "0.21.0"
+    id("io.freefair.lombok") version "3.2.1"
     id("org.gretty") version "2.3.1"
-    id("io.freefair.lombok") version "3.2.0"
 }
 
 repositories {
@@ -24,14 +25,20 @@ repositories {
 }
 
 dependencies {
-    providedCompile("javax.servlet:javax.servlet-api:3.1.0")
+    providedCompile("javax.servlet:javax.servlet-api:4.0.1")
+    providedCompile("javax.websocket:javax.websocket-api:1.1")
     providedCompile("org.apache.logging.log4j:log4j-api:2.11.2")
     providedCompile("org.apache.logging.log4j:log4j-core:2.11.2")
     providedCompile("org.apache.logging.log4j:log4j-slf4j18-impl:2.11.2")
-    testCompile("junit:junit:4.12")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.1.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.1.0")
+}
+
+tasks.named<Test>("test") {
+    useJUnitPlatform()
 }
 
 gretty {
-    servletContainer = "jetty9.4"
+    servletContainer = "tomcat9"
     logbackConfigFile = "gretty-logback.xml"
 }
