@@ -1,10 +1,12 @@
-package me.ericjiang.frontiersmen.service;
+package me.ericjiang.frontiersmen.service.endpoint;
 
 import com.google.gson.Gson;
 
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
+
+import me.ericjiang.frontiersmen.service.model.GameEvent;
 
 public class GameEventEncoder implements Encoder.Text<GameEvent> {
 

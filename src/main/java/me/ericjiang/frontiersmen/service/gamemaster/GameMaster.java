@@ -1,6 +1,9 @@
-package me.ericjiang.frontiersmen.service;
+package me.ericjiang.frontiersmen.service.gamemaster;
 
 import lombok.extern.slf4j.Slf4j;
+import me.ericjiang.frontiersmen.service.dao.GameDao;
+import me.ericjiang.frontiersmen.service.model.Game;
+import me.ericjiang.frontiersmen.service.model.GameEvent;
 
 import java.util.HashMap;
 import java.util.Map;

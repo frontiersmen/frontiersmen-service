@@ -1,10 +1,11 @@
-package me.ericjiang.frontiersmen.service;
+package me.ericjiang.frontiersmen.service.endpoint;
 
 import lombok.extern.slf4j.Slf4j;
+import me.ericjiang.frontiersmen.service.model.GameEvent;
+import me.ericjiang.frontiersmen.service.gamemaster.GameMaster;
 import me.ericjiang.frontiersmen.service.configuration.GameEndpointConfigurator;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.websocket.EncodeException;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;

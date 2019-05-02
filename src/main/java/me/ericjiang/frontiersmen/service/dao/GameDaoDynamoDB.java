@@ -1,4 +1,6 @@
-package me.ericjiang.frontiersmen.service;
+package me.ericjiang.frontiersmen.service.dao;
+
+import me.ericjiang.frontiersmen.service.model.Game;
 
 public class GameDaoDynamoDB implements GameDao {
     @Override

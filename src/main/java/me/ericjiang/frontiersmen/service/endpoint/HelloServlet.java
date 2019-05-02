@@ -1,4 +1,4 @@
-package me.ericjiang.frontiersmen.service;
+package me.ericjiang.frontiersmen.service.endpoint;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

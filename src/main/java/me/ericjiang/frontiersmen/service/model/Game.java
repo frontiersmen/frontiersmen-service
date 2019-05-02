@@ -1,4 +1,4 @@
-package me.ericjiang.frontiersmen.service;
+package me.ericjiang.frontiersmen.service.model;
 
 import lombok.Data;
 
