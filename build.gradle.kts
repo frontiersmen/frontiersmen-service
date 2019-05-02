@@ -26,6 +26,8 @@ repositories {
 
 dependencies {
     providedCompile("com.google.code.gson:gson:2.8.5")
+    providedCompile("com.google.inject:guice:4.2.2")
+    providedCompile("com.google.inject.extensions:guice-servlet:4.2.2")
     providedCompile("javax.servlet:javax.servlet-api:4.0.1")
     providedCompile("javax.websocket:javax.websocket-api:1.1")
     providedCompile("org.apache.logging.log4j:log4j-api:2.11.2")

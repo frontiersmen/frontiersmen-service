@@ -1,7 +1,10 @@
 package me.ericjiang.frontiersmen.service;
 
 import lombok.extern.slf4j.Slf4j;
+import me.ericjiang.frontiersmen.service.configuration.GameEndpointConfigurator;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.websocket.EncodeException;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -16,8 +19,16 @@ import java.io.IOException;
 @ServerEndpoint(
         value = "/game/{gameId}/player/{playerId}",
         encoders = GameEventEncoder.class,
-        decoders = GameEventDecoder.class)
+        decoders = GameEventDecoder.class,
+        configurator = GameEndpointConfigurator.class)
 public class GameEndpoint {
+
+    private final GameMaster gameMaster;
+
+    @Inject
+    public GameEndpoint(GameMaster gameMaster) {
+        this.gameMaster = gameMaster;
+    }
 
     @OnOpen
     public void onOpen(
@@ -36,8 +47,9 @@ public class GameEndpoint {
             @PathParam("gameId") String gameId,
             @PathParam("playerId") String playerId) throws IOException, EncodeException {
         // Translate and forward GameEvents
-        session.getBasicRemote().sendObject(event);
         log.debug("Received message from player {} to game {}: '{}'", playerId, gameId, event.toString());
+        gameMaster.processEvent(event);
+        session.getBasicRemote().sendObject(event);
     }
 
     @OnClose
