@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * "A gamemaster (GM; also known as game master, game manager, game moderator or referee) is a person who acts as an
@@ -36,9 +37,9 @@ public class GameMaster {
     private final Map<String, BiConsumer<GameEvent, Game>> eventProcessors;
 
     @Inject
-    public GameMaster(GameDao gameDao) {
+    public GameMaster(GameDao gameDao, Map<String, BiConsumer<GameEvent, Game>> eventProcessors) {
         this.gameDao = gameDao;
-        eventProcessors = new HashMap<>();
+        this.eventProcessors = eventProcessors;
     }
 
     public void processEvent(GameEvent event) {

@@ -3,7 +3,7 @@ package me.ericjiang.frontiersmen.service.endpoint;
 import lombok.extern.slf4j.Slf4j;
 import me.ericjiang.frontiersmen.service.model.GameEvent;
 import me.ericjiang.frontiersmen.service.gamemaster.GameMaster;
-import me.ericjiang.frontiersmen.service.configuration.GameEndpointConfigurator;
+import me.ericjiang.frontiersmen.service.configuration.EndpointConfigurator;
 
 import javax.inject.Inject;
 import javax.websocket.EncodeException;
@@ -21,7 +21,7 @@ import java.io.IOException;
         value = "/game/{gameId}/player/{playerId}",
         encoders = GameEventEncoder.class,
         decoders = GameEventDecoder.class,
-        configurator = GameEndpointConfigurator.class)
+        configurator = EndpointConfigurator.class)
 public class GameEndpoint {
 
     private final GameMaster gameMaster;

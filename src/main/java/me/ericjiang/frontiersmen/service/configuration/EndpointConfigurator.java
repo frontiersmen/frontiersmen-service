@@ -5,7 +5,7 @@ import javax.websocket.server.ServerEndpointConfig;
 
 import com.google.inject.Injector;
 
-public class GameEndpointConfigurator extends ServerEndpointConfig.Configurator {
+public class EndpointConfigurator extends ServerEndpointConfig.Configurator {
 
     @Inject
     private static Injector injector;
