@@ -54,5 +54,6 @@ public class GameMaster {
 
         // update game
         gameDao.updateGame(game);
+        log.debug("{}", game);
     }
 }

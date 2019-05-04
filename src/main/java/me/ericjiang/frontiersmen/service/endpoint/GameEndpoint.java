@@ -49,6 +49,8 @@ public class GameEndpoint {
             @PathParam("playerId") String playerId) throws IOException, EncodeException {
         // Translate and forward GameEvents
         log.debug("Received message from player {} to game {}: '{}'", playerId, gameId, event.toString());
+        event.setGameId(gameId);
+        event.setPlayerId(playerId);
         gameMaster.processEvent(event);
         session.getBasicRemote().sendObject(event);
     }

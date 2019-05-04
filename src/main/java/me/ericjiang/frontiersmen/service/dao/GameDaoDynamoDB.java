@@ -5,7 +5,7 @@ import me.ericjiang.frontiersmen.service.model.Game;
 public class GameDaoDynamoDB implements GameDao {
     @Override
     public Game getGame(String gameId) {
-        return null;
+        return new Game("123");
     }
 
     @Override
