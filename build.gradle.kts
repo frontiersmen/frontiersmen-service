@@ -26,6 +26,7 @@ repositories {
 
 dependencies {
     providedCompile("com.google.code.gson:gson:2.8.5")
+    providedCompile("com.google.guava:guava:27.1-jre")
     providedCompile("com.google.inject:guice:4.2.2")
     providedCompile("com.google.inject.extensions:guice-servlet:4.2.2")
     providedCompile("javax.servlet:javax.servlet-api:4.0.1")

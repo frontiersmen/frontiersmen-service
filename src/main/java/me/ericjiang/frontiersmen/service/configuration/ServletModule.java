@@ -1,12 +1,17 @@
 package me.ericjiang.frontiersmen.service.configuration;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.inject.Provides;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.MapBinder;
 import me.ericjiang.frontiersmen.service.dao.GameDao;
 import me.ericjiang.frontiersmen.service.dao.GameDaoDynamoDB;
 import me.ericjiang.frontiersmen.service.gamemaster.MessageEventProcessor;
 import me.ericjiang.frontiersmen.service.model.Game;
-import me.ericjiang.frontiersmen.service.model.GameEvent;
+import me.ericjiang.frontiersmen.service.model.event.GameEvent;
+import me.ericjiang.frontiersmen.service.model.event.MessageEvent;
+import me.ericjiang.frontiersmen.service.util.RuntimeTypeAdapterFactory;
 
 import java.util.function.BiConsumer;
 
@@ -20,10 +25,20 @@ public class ServletModule extends com.google.inject.servlet.ServletModule {
         bind(GameDao.class).to(GameDaoDynamoDB.class);
 
         // configure GameMaster's event processors
-        MapBinder<String, BiConsumer<GameEvent, Game>> eventProcessors = MapBinder.newMapBinder(
-                binder(),
-                new TypeLiteral<String>() {},
-                new TypeLiteral<BiConsumer<GameEvent, Game>>() {});
-        eventProcessors.addBinding("MessageEvent").to(MessageEventProcessor.class);
+        final MapBinder<Class<? extends GameEvent>, BiConsumer<? extends GameEvent, Game>> eventProcessors
+                = MapBinder.newMapBinder(
+                        binder(),
+                        new TypeLiteral<Class<? extends GameEvent>>() {},
+                        new TypeLiteral<BiConsumer<? extends GameEvent, Game>>() {});
+        eventProcessors.addBinding(MessageEvent.class).to(MessageEventProcessor.class);
+    }
+
+    @Provides
+    public Gson provideGson() {
+        return new GsonBuilder()
+                .registerTypeAdapterFactory(
+                        RuntimeTypeAdapterFactory.of(GameEvent.class, "eventType")
+                                .registerSubtype(MessageEvent.class))
+                .create();
     }
 }

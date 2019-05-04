@@ -1,7 +1,7 @@
 package me.ericjiang.frontiersmen.service.endpoint;
 
 import lombok.extern.slf4j.Slf4j;
-import me.ericjiang.frontiersmen.service.model.GameEvent;
+import me.ericjiang.frontiersmen.service.model.event.GameEvent;
 import me.ericjiang.frontiersmen.service.gamemaster.GameMaster;
 import me.ericjiang.frontiersmen.service.configuration.EndpointConfigurator;
 
@@ -19,8 +19,8 @@ import java.io.IOException;
 @Slf4j
 @ServerEndpoint(
         value = "/game/{gameId}/player/{playerId}",
-        encoders = GameEventEncoder.class,
-        decoders = GameEventDecoder.class,
+        encoders = GameEventSerializer.class,
+        decoders = GameEventSerializer.class,
         configurator = EndpointConfigurator.class)
 public class GameEndpoint {
 
@@ -49,6 +49,8 @@ public class GameEndpoint {
             @PathParam("playerId") String playerId) throws IOException, EncodeException {
         // Translate and forward GameEvents
         log.debug("Received message from player {} to game {}: '{}'", playerId, gameId, event.toString());
+        event.setGameId(gameId);
+        event.setPlayerId(playerId);
         gameMaster.processEvent(event);
         session.getBasicRemote().sendObject(event);
     }

@@ -3,15 +3,13 @@ package me.ericjiang.frontiersmen.service.gamemaster;
 import lombok.extern.slf4j.Slf4j;
 import me.ericjiang.frontiersmen.service.dao.GameDao;
 import me.ericjiang.frontiersmen.service.model.Game;
-import me.ericjiang.frontiersmen.service.model.GameEvent;
+import me.ericjiang.frontiersmen.service.model.event.GameEvent;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 /**
  * "A gamemaster (GM; also known as game master, game manager, game moderator or referee) is a person who acts as an
@@ -34,25 +32,29 @@ public class GameMaster {
 
     private final GameDao gameDao;
 
-    private final Map<String, BiConsumer<GameEvent, Game>> eventProcessors;
+    private final Map<Class<? extends GameEvent>, BiConsumer<? extends GameEvent, Game>> eventProcessors;
 
     @Inject
-    public GameMaster(GameDao gameDao, Map<String, BiConsumer<GameEvent, Game>> eventProcessors) {
+    public GameMaster(
+            GameDao gameDao,
+            Map<Class<? extends GameEvent>, BiConsumer<? extends GameEvent, Game>> eventProcessors) {
         this.gameDao = gameDao;
         this.eventProcessors = eventProcessors;
     }
 
-    public void processEvent(GameEvent event) {
+    public <T extends GameEvent> void processEvent(T event) {
         log.info("Processing {}", event);
         // get game
         final Game game = gameDao.getGame(event.getGameId());
         // process event
-        final String eventType = event.getEventType();
-        Optional.ofNullable(eventProcessors.get(eventType))
-                .orElseThrow(() -> new UnsupportedOperationException(String.format("Unsupported event type '%s'", eventType)))
+        final Class<? extends GameEvent> eventType = event.getClass();
+        Optional.ofNullable((BiConsumer<T, Game>) eventProcessors.get(eventType))
+                .orElseThrow(() -> new UnsupportedOperationException(
+                            String.format("Unsupported event type '%s'", eventType)))
                 .accept(event, game);
 
         // update game
         gameDao.updateGame(game);
+        log.debug("{}", game);
     }
 }
